@@ -131,6 +131,6 @@ STATIC_URL = '/static/'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'asgiref.inmemory.ChannelLayer',
-        'ROUTING': 'messageboard.routing.websocket_routing'
+        'ROUTING': 'messageboard.routing.routing'
     }
 }

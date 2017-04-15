@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "react": "15.2.1",
-    "react-dom": "15.2.1"
+    "react-dom": "15.2.1",
+    "react-websocket": "1.1.6"
   }
 }
