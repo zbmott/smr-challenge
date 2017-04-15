@@ -1,7 +1,33 @@
 div {
   box-sizing: border-box;
+  padding: .25em;
 }
 
 div, article, aside {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
+}
+
+a {
+  cursor: pointer;
+}
+
+div#create-user-account {
+  background-color: #ffffff;
+  border: 1px solid #000000;
+  position: fixed;
+  top: 33%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+div.form-feedback {
+  margin-bottom: 15px;
+}
+
+.error {
+  color: #cd5c5c;
+}
+
+.success {
+  color: #5ccd5c;
 }

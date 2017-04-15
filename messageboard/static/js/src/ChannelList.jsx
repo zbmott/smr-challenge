@@ -9,8 +9,8 @@ class ChannelList extends Component {
         <h3>Channels</h3>
         <ul>
           {this.props.channels.map((channel, idx) =>
-            <li>
-              <Channel name={channel.name} />
+            <li key={channel.key}>
+              <Channel {...channel} />
             </li>
           )}
         </ul>

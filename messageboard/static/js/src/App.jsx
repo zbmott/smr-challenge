@@ -18,6 +18,14 @@ class App extends Component {
         "anonymous": true
       }
     };
+
+    fetch('http://localhost:8000/whoami/', {credentials: 'include'}).then(response => {
+      return response.json();
+    }).then(json => {
+      console.log(json);
+      this.setState({user: json.user});
+    });
+
   }
 
   handleData(data) {
@@ -26,6 +34,10 @@ class App extends Component {
 
   topicURL() {
     return "ws://localhost:8000/topics" + this.state.currentChannel;
+  }
+
+  updateUser(user) {
+    this.setState({user: user});
   }
 
   render() {
@@ -39,7 +51,7 @@ class App extends Component {
           <TopicList topics={this.state.topicList} />
         </article>
         <aside className="col-xs-4">
-          <Account />
+          <Account user={this.state.user} updateUser={this.updateUser.bind(this)}/>
           <ChannelList channels={this.state.channelList} />
         </aside>
       </div>
