@@ -47,7 +47,7 @@ class App extends Component {
         <Websocket url="ws://localhost:8000/_channellist" onMessage={this.handleData.bind(this)} />
         <article className="col-xs-8">
           <CurrentChannel name={this.state.currentChannel} />
-          <NewTopic />
+          <NewTopic user={this.state.user} currentChannel={this.state.currentChannel} />
           <TopicList topics={this.state.topicList} />
         </article>
         <aside className="col-xs-4">
