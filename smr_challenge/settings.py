@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'treebeard',
-    'messageboard'
+    'messageboard',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,12 @@ CHANNEL_LAYERS = {
         'ROUTING': 'messageboard.routing.routing'
     }
 }
+
+# +---------------------------------------------------------------------------+
+# |                                                                           |
+# |                               messageboard                                |
+# |                                                                           |
+# +---------------------------------------------------------------------------+
+
+ROOT_CHANNEL_NAME = '/'
+ROOT_CHANNEL_LIMIT = 25

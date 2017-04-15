@@ -4,10 +4,19 @@ __author__ = 'zach.mott@gmail.com'
 
 from channels.routing import route, include
 
+
 topic_routing = [
-    route('websocket.connect', 'messageboard.consumers.topic_add', path=r'(?P<topic>[a-zA-Z0-9_/]+)/$'),
-    route('websocket.disconnect', 'messageboard.consumers.topic_disconnect')
+    route(
+        'websocket.connect',
+        'messageboard.consumers.topic_add',
+        path=r'(?P<channel>[a-zA-Z0-9_\-/]+)/$'
+    ),
+    route(
+        'websocket.disconnect',
+        'messageboard.consumers.topic_disconnect'
+    )
 ]
+
 
 channel_list_routing = [
     route('websocket.connect', 'messageboard.consumers.channel_list_add'),
