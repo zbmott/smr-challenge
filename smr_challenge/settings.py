@@ -41,13 +41,18 @@ INSTALLED_APPS = [
     'treebeard',
     'messageboard',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+# Normally I wouldn't ever consider disabling CSRF middleware, but
+# conveying the CSRF token to the front is a problem I'm not going
+# to address right now.
+#    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -138,7 +143,22 @@ CHANNEL_LAYERS = {
 
 # +---------------------------------------------------------------------------+
 # |                                                                           |
-# |                               messageboard                                |
+# |                          django-cors-headers                              |
+# |                                                                           |
+# +---------------------------------------------------------------------------+
+
+from corsheaders.defaults import default_headers
+
+# Cross-origin requests are necessary while developing.
+CORS_ORIGIN_WHITELIST = [
+    'localhost:3000'
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# +---------------------------------------------------------------------------+
+# |                                                                           |
+# |                              messageboard                                 |
 # |                                                                           |
 # +---------------------------------------------------------------------------+
 
