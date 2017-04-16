@@ -15,7 +15,7 @@ class TopicList extends Component {
     return (
       <div>
         {this.props.topics.map((topic, idx) =>
-          <Topic key={topic.key} userLikes={this.isLiked(topic.pk)} {...topic} />
+          <Topic key={topic.key} anonymousUser={this.props.user.anonymous} userLikes={this.isLiked(topic.pk)} {...topic} />
         )}
       </div>
     )

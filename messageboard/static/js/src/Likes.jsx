@@ -34,7 +34,11 @@ class Likes extends AJAXComponent {
   }
 
   render() {
-    if(this.state.userLikes) {
+    if(this.props.anonymousUser) {
+      return (
+        <span>{this.props.likesCount} people like this topic.</span>
+      )
+    } else if(this.state.userLikes) {
       return (
         <span>
           {this.props.likesCount} people like this topic. You can <a onClick={this.unlike.bind(this)}>unlike</a> it if you want.
