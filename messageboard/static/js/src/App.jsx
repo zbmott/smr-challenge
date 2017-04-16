@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Websocket from 'react-websocket';
 
+import config from 'config';
+
 import CurrentChannel from './CurrentChannel.jsx'
 import NewTopic from './NewTopic.jsx'
 import TopicList from './TopicList.jsx'
@@ -10,6 +12,9 @@ import ChannelList from './ChannelList.jsx'
 class App extends Component {
   constructor() {
     super();
+
+    console.log(config);
+
     this.state = {
       "currentChannel": "home",
       "channelList": [],
@@ -19,7 +24,7 @@ class App extends Component {
       }
     };
 
-    fetch('http://localhost:8000/whoami/', {credentials: 'include'}).then(response => {
+    fetch("http://" + config.api_host + "/whoami/", {credentials: 'include'}).then(response => {
       return response.json();
     }).then(json => {
       this.setState({user: json.user});
@@ -32,7 +37,11 @@ class App extends Component {
   }
 
   topicURL() {
-    return "ws://localhost:8000/topics/" + this.state.currentChannel;
+    return "ws://" + config.ws_host + "/topics/" + this.state.currentChannel;
+  }
+
+  channelURL() {
+    return "ws://" + config.ws_host + "/_channellist";
   }
 
   updateUser(user) {
@@ -47,7 +56,7 @@ class App extends Component {
     return (
       <div>
         <Websocket key={this.state.currentChannel} url={this.topicURL()} onMessage={this.handleData.bind(this)} />
-        <Websocket url="ws://localhost:8000/_channellist" onMessage={this.handleData.bind(this)} />
+        <Websocket url={this.channelURL()} onMessage={this.handleData.bind(this)} />
         <article className="col-xs-8">
           <CurrentChannel name={this.state.currentChannel} />
           <NewTopic key={this.state.currentChannel} user={this.state.user} currentChannel={this.state.currentChannel} />

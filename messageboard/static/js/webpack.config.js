@@ -22,8 +22,16 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ["style", "css", "sass"],
-//        include: path.join(__dirname, '..', 'css')
       }
     ]
+  },
+  externals: {
+    'config': JSON.stringify(process.env.ENV === 'production' ? {
+      "ws_host": "54.68.44.21",
+      "api_host": "54.68.44.21"
+    }: {
+      "ws_host": "localhost:8000",
+      "api_host": "localhost:8000"
+    })
   }
-}
+};

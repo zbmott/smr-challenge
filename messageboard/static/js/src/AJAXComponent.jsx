@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
-const DOMAIN = "http://localhost:8000";
+import config from 'config';
+
 
 class AJAXComponent extends Component {
   getPromise(path, config={}) {
@@ -10,7 +11,7 @@ class AJAXComponent extends Component {
       headers: {"Content-Type": "application/json"},
     }, config);
 
-    return fetch(DOMAIN + path, config);
+    return fetch(config.api_host + path, config);
   };
 }
 export default AJAXComponent
