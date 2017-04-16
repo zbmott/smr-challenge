@@ -9,7 +9,7 @@ class TopicList extends Component {
         <h3>TopicList</h3>
         <ul>
           {this.props.topics.map((topic, idx) =>
-            <li>
+            <li key={topic.key}>
               <Topic {...topic} />
             </li>
           )}

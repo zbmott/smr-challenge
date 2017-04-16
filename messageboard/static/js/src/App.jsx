@@ -39,19 +39,23 @@ class App extends Component {
     this.setState({user: user});
   }
 
+  updateChannel(channel) {
+    this.setState({currentChannel: channel});
+  }
+
   render() {
     return (
       <div>
-        <Websocket url={this.topicURL()} onMessage={this.handleData.bind(this)} />
+        <Websocket key={this.state.currentChannel} url={this.topicURL()} onMessage={this.handleData.bind(this)} />
         <Websocket url="ws://localhost:8000/_channellist" onMessage={this.handleData.bind(this)} />
         <article className="col-xs-8">
           <CurrentChannel name={this.state.currentChannel} />
-          <NewTopic user={this.state.user} currentChannel={this.state.currentChannel} />
+          <NewTopic key={this.state.currentChannel} user={this.state.user} currentChannel={this.state.currentChannel} />
           <TopicList topics={this.state.topicList} />
         </article>
         <aside className="col-xs-4">
           <Account user={this.state.user} updateUser={this.updateUser.bind(this)}/>
-          <ChannelList channels={this.state.channelList} />
+          <ChannelList channels={this.state.channelList} updateChannel={this.updateChannel.bind(this)} />
         </aside>
       </div>
     );
