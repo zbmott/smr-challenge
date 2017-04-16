@@ -78,6 +78,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'smr_challenge.wsgi.application'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases

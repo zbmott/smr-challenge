@@ -25,6 +25,6 @@ channel_list_routing = [
 
 
 routing = [
-    include(topic_routing, path=r'^/topics/'),
-    include(channel_list_routing, path=r'^/_channellist')
+    include(topic_routing, path=r'^/ws/topics/'),
+    include(channel_list_routing, path=r'^/ws/_channellist')
 ]
