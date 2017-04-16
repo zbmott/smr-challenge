@@ -239,6 +239,20 @@
   tags:
     - deploy
 
+- name: Collect static files
+  django_manage:
+    app_path: '{{ app_root }}'
+    # It's regrettable that this list is so long. I'd really just prefer to
+    # exclude the entire messageboard app from the staticfiles finder, but
+    # there's no easy way to do that.
+    command: collectstatic --noinput -i node_modules -i *.jsx -i *.scss -i *.json -i *.config.js -i server.js
+    settings: '{{ app_django_settings_module }}'
+    virtualenv: '{{ virtualenv_path }}'
+  become_user: '{{ app_name }}'
+  become: yes
+  tags:
+    - deploy
+
 # +---------------------------------------------------------------------------+
 # |                                                                           |
 # |                            Configure supervisor                           |
