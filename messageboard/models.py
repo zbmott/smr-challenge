@@ -65,6 +65,7 @@ class NotifyGroupMixin(object):
     def notify_group(self):
         group_name = self.get_group_name()
         queryset = self.get_notify_queryset(group_name)
+
         Group(group_name).send({
             'text': json.dumps({
                 # In most cases, models that include this mixin will
@@ -112,7 +113,6 @@ class Topic(NotifyGroupMixin, MP_Node):
     objects = TopicQuerySet.as_manager()
 
     class Meta:
-        unique_together = ['title', 'channel']
         ordering = ['-created']
 
     def __unicode__(self):
@@ -128,14 +128,18 @@ class Topic(NotifyGroupMixin, MP_Node):
         # is inverted, treebeard will fail to add root nodes beyond the
         # second one.
         # TODO: Report (and fix) this issue in django-treebeard.
-        return get_result_class(cls).objects.filter(depth=1).order_by('path')
+        return super(Topic, cls).get_root_nodes().order_by('path')
+
+    def get_children(self):
+        # Same problem as get_root_nodes above.
+        return super(Topic, self).get_children().order_by('path')
 
     def get_group_name(self):
         return self.channel.name
 
     def notify_group(self):
         super(Topic, self).notify_group()
-        queryset = self.__class__.objects.all()[:settings.ROOT_CHANNEL_LIMIT]
+        queryset = self.__class__.objects.filter(depth=1)[:settings.ROOT_CHANNEL_LIMIT]
         Group(settings.ROOT_CHANNEL_NAME).send({
             'text': json.dumps({
                 'topicList': queryset.to_dict()
@@ -143,7 +147,25 @@ class Topic(NotifyGroupMixin, MP_Node):
         })
 
     def get_notify_queryset(self, group_name):
-        return self.__class__.objects.filter(channel__name=group_name)
+        return self.__class__.objects.filter(depth=1, channel__name=group_name)
+
+# +---------------------------------------------------------------------------+
+# |                                                                           |
+# |                     Helper methods for TopicSerializer                    |
+# |                                                                           |
+# +---------------------------------------------------------------------------+
+
+    def get_parent_pk(self):
+        """
+        Helper method for TopicSerializer.
+        """
+        try:
+            return self.get_parent().pk
+        except AttributeError:
+            return None
+
+    def get_children_for_serializer(self):
+        return self.get_children().order_by(*self._meta.ordering)
 
 
 class Like(NotifyGroupMixin, models.Model):
