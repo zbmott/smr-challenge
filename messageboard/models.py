@@ -67,6 +67,9 @@ class NotifyGroupMixin(object):
         queryset = self.get_notify_queryset(group_name)
         Group(group_name).send({
             'text': json.dumps({
+                # In most cases, models that include this mixin will
+                # also need to use JSONQuerySet. However, this is not
+                # always the case, as in the Like model below.
                 self.notify_property_name: queryset.to_dict()
             })
         })
@@ -80,6 +83,7 @@ class Channel(NotifyGroupMixin, models.Model):
     notify_property_name = 'channelList'
 
     name = models.CharField(max_length=255, unique=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     objects = JSONQuerySet.as_manager()
 
@@ -92,6 +96,9 @@ class TopicQuerySet(JSONQuerySet, MP_NodeQuerySet):
 
 
 class Topic(NotifyGroupMixin, MP_Node):
+    # Determines the number of nodes at any given level of the tree,
+    # but decreases the maximum depth. A steplen of 5 allows more than
+    # 60M children per node. The default is 4, which allows ~1.5M children.
     steplen = 5
     notify_property_name = 'topicList'
 
@@ -142,6 +149,7 @@ class Topic(NotifyGroupMixin, MP_Node):
 class Like(NotifyGroupMixin, models.Model):
     topic = models.ForeignKey('messageboard.Topic')
     user = models.ForeignKey('auth.User')
+    created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return u"{user} => {topic}".format(
