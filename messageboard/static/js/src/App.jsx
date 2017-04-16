@@ -11,7 +11,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      "currentChannel": "/",
+      "currentChannel": "home",
       "channelList": [],
       "topicList": [],
       "user": {
@@ -22,7 +22,6 @@ class App extends Component {
     fetch('http://localhost:8000/whoami/', {credentials: 'include'}).then(response => {
       return response.json();
     }).then(json => {
-      console.log(json);
       this.setState({user: json.user});
     });
 
@@ -33,7 +32,7 @@ class App extends Component {
   }
 
   topicURL() {
-    return "ws://localhost:8000/topics" + this.state.currentChannel;
+    return "ws://localhost:8000/topics/" + this.state.currentChannel;
   }
 
   updateUser(user) {

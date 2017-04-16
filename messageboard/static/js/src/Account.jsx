@@ -26,10 +26,10 @@ class SignInForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     let form = this.refs.form.getValue();
-    fetch('http://localhost:8000/login/', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify({'username': form.username, 'password': form.password})
+    fetch("http://localhost:8000/login/", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({"username": form.username, "password": form.password})
     }).then(response => {
       return response.json();
     }).then(json => {
