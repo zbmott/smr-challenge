@@ -8,16 +8,14 @@ class MessageboardConfig(AppConfig):
     name = 'messageboard'
 
     def ready(self):
-        post_save.connect(post_save_handler, sender=self.get_model('Channel'))
-        post_save.connect(post_save_handler, sender=self.get_model('Topic'))
-        post_save.connect(post_save_handler, sender=self.get_model('Like'))
-        post_delete.connect(post_delete_handler, sender=self.get_model('Like'))
+        # If users are ever allowed to edit their topics, using the
+        # same handler for all of these signals means that we won't
+        # have to write to code to push the updates to the clients.
+        post_save.connect(model_changed_handler, sender=self.get_model('Channel'))
+        post_save.connect(model_changed_handler, sender=self.get_model('Topic'))
+        post_save.connect(model_changed_handler, sender=self.get_model('Like'))
+        post_delete.connect(model_changed_handler, sender=self.get_model('Like'))
 
 
-def post_save_handler(sender, instance, created, **kw):
-    if created:
-        instance.notify_group()
-
-
-def post_delete_handler(sender, instance, **kw):
+def model_changed_handler(sender, instance, **kw):
     instance.notify_group()
