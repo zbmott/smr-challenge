@@ -1,0 +1,17 @@
+[group:{{ app_name }}]
+programs=daphne,worker
+
+[program:daphne]
+command={{ virtualenv_path }}/bin/daphne smr_challenge.asgi:channel_layer -u /home/{{ app_name }}/run/daphne.sock
+environment=PYTHONPATH="{{ app_root }}"
+user= {{ app_name }}
+stdout_logfile=/home/{{ app_name }}/logs/daphne.stdout.log
+stderr_logfile=/home/{{ app_name }}/logs/daphne.stderr.log
+
+[program:worker]
+command={{ virtualenv_path }}/bin/python {{ app_root }}/manage.py runworker
+process_name=%(program_name)s_%(process_num)02d
+numprocs={{ (ansible_processor_count * 2) + 1 }}
+stdout_logfile=/home/{{ app_name }}/logs/worker.stdout.log
+stderr_logfile=/home/{{ app_name }}/logs/worker.stderr.log
+user={{ app_name }}
