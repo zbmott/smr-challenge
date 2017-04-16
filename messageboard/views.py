@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_GET, require_POST
 
 from messageboard import forms as messageboard_forms
+from messageboard.models import Like
 
 User = get_user_model()
 
@@ -101,7 +102,13 @@ class WhoAmI(generic.View):
             user = {
                 'pk': request.user.pk,
                 'username': request.user.username,
-                'anonymous': False
+                'anonymous': False,
+                # list() coerces the queryset into a list, which
+                # is JSON-serializable. values_list avoids overhead
+                # associated with instantiating model instances.
+                'likedPosts': list(Like.objects.filter(
+                    user=request.user
+                ).values_list('topic_id', flat=True))
             }
         else:
             user = {

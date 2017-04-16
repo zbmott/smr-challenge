@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from rest_framework import serializers
 
-from messageboard.models import Topic, Channel
+from messageboard.models import Channel, Like, Topic
 
 
 class ChannelSerializer(serializers.ModelSerializer):
@@ -23,6 +23,20 @@ class ChannelSerializer(serializers.ModelSerializer):
         return channel
 
 
+class LikeSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField(required=False)
+    topic_id = serializers.IntegerField()
+
+    class Meta:
+        model = Like
+        fields = ['user_id', 'topic_id']
+
+    def create(self, validated_data):
+        validated_data['user_id'] = self.context['request'].user.pk
+        like, _ = Like.objects.get_or_create(**validated_data)
+        return like
+
+
 class TopicSerializer(serializers.ModelSerializer):
     channel = ChannelSerializer()
     key = serializers.IntegerField(source='pk', required=False)
@@ -34,9 +48,9 @@ class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
         fields = [
-            'key', 'title', 'content',
-            'channel', 'created_by',
-            'created', 'likes', 'parent'
+            'pk', 'key', 'title', 'content',
+            'channel', 'created_by', 'created',
+            'likes', 'parent'
         ]
         read_only_fields = ['key']
 

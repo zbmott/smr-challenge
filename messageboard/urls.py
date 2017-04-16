@@ -7,11 +7,12 @@ from django.conf.urls import url, include
 from rest_framework import routers
 
 from messageboard import views
-from messageboard.api.viewsets import TopicViewSet
+from messageboard.api import viewsets
 
 
 router = routers.SimpleRouter()
-router.register(r'topics', TopicViewSet)
+router.register(r'topics', viewsets.TopicViewSet)
+router.register(r'likes', viewsets.LikeViewSet)
 
 
 urlpatterns = [
