@@ -2,11 +2,15 @@
 
 __author__ = 'zach.mott@gmail.com'
 
+import bleach, re
+
 from django.utils import timezone
 
 from rest_framework import serializers
 
 from messageboard.models import Channel, Like, Topic
+
+INVALID_CHANNEL_CHARS = re.compile(r'[^A-Za-z0-9_\-]')
 
 
 class ChannelSerializer(serializers.ModelSerializer):
@@ -21,6 +25,9 @@ class ChannelSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         channel, _ = Channel.objects.get_or_create(**validated_data)
         return channel
+
+    def validate_name(self, value):
+        return INVALID_CHANNEL_CHARS.sub('', value)
 
 
 class LikeSerializer(serializers.ModelSerializer):
@@ -83,6 +90,10 @@ class TopicSerializer(serializers.ModelSerializer):
         except AttributeError:
             return None
 
+    def validate_content(self, value):
+        return bleach.clean(value, tags=[], strip=True)
 
-
-
+    def validate_title(self, value):
+        # Could just assign validate_title = validate_content,
+        # but this makes the stack trace more readable.
+        return self.validate_content(value)

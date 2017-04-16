@@ -25,9 +25,6 @@ class MessageBoardViewSet(GenericViewSet):
             return Response(status=403)
         return super(MessageBoardViewSet, self).dispatch(request, *pos, **kw)
 
-    def get_success_headers(self, data):
-        return {}
-
 
 class TopicViewSet(CreateModelMixin, MessageBoardViewSet):
     serializer_class = TopicSerializer
