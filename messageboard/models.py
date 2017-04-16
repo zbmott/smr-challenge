@@ -4,7 +4,7 @@ __author__ = 'zach.mott@gmail.com'
 
 from django.db import models
 
-from treebeard.mp_tree import MP_Node
+from treebeard.mp_tree import MP_Node, MP_NodeQuerySet, get_result_class
 
 from rest_framework.renderers import JSONRenderer
 
@@ -59,8 +59,12 @@ class Channel(models.Model):
         return self.name
 
 
+class TopicQuerySet(JSONQuerySet, MP_NodeQuerySet):
+    pass
+
+
 class Topic(MP_Node):
-    node_order_by = ['-created']
+    steplen = 5
 
     channel = models.ForeignKey('messageboard.Channel')
     title = models.CharField(max_length=255)
@@ -69,13 +73,26 @@ class Topic(MP_Node):
     created_by = models.ForeignKey('auth.User')
     created = models.DateTimeField(auto_now_add=True)
 
-    objects = JSONQuerySet.as_manager()
+    objects = TopicQuerySet.as_manager()
 
     class Meta:
         unique_together = ['title', 'channel']
+        ordering = ['-created']
 
     def __unicode__(self):
         return u"{title} ({channel})".format(title=self.title, channel=self.channel)
+
+    @classmethod
+    def get_root_nodes(cls):
+        # Explicitly set the ordering to 'path' so that treebeard
+        # can correctly determine the last root to be added to the
+        # tree. This is important when adding root nodes, because
+        # treebeard determines the new root node's path by incrementing
+        # the most recently-added root node's path. If this ordering
+        # is inverted, treebeard will fail to add root nodes beyond the
+        # second one.
+        # TODO: Report (and fix) this issue in django-treebeard.
+        return get_result_class(cls).objects.filter(depth=1).order_by('path')
 
 
 class Like(models.Model):
