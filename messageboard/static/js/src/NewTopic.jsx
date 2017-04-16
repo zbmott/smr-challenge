@@ -1,9 +1,11 @@
-import React, {Component} from 'react'
+import React from 'react'
+
+import AJAXComponent from './AJAXComponent.jsx'
 
 import t from 'tcomb-form'
 
 
-class NewTopic extends Component {
+class NewTopic extends AJAXComponent {
   schema = t.struct({
     channel: t.String,
     title: t.String,
@@ -32,10 +34,7 @@ class NewTopic extends Component {
   onSubmit(e) {
     e.preventDefault();
     let form = this.refs.form.getValue();
-    fetch("http://localhost:8000/api/v1/topics/", {
-      method: "POST",
-      credentials: "include",
-      headers: {"Content-Type": "application/json"},
+    this.getPromise("/api/v1/topics/", {
       body: JSON.stringify({
         title: form.title,
         content: form.content,
@@ -43,9 +42,6 @@ class NewTopic extends Component {
           name: form.channel
         }
       })
-    }).then(response => {
-      return response.json();
-    }).then(json => {
     });
   }
 
