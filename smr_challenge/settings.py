@@ -162,5 +162,13 @@ CORS_ALLOW_CREDENTIALS = True
 # |                                                                           |
 # +---------------------------------------------------------------------------+
 
-ROOT_CHANNEL_NAME = '/'
+ROOT_CHANNEL_NAME = 'home'
 ROOT_CHANNEL_LIMIT = 25
+
+# +---------------------------------------------------------------------------+
+# |                                                                           |
+# |                              local_settings.py                            |
+# |                      Don't add settings below this line.                  |
+# +---------------------------------------------------------------------------+
+
+from local_settings import *
