@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 
+import AJAXComponent from './AJAXComponent.jsx'
+
 import t from 'tcomb-form'
 
 
-class SignInForm extends Component {
+class SignInForm extends AJAXComponent {
   schema = t.struct({
     username: t.String,
     password: t.String
@@ -26,9 +28,7 @@ class SignInForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     let form = this.refs.form.getValue();
-    fetch("http://localhost:8000/login/", {
-      method: "POST",
-      credentials: "include",
+    this.getPromise('/login/', {
       body: JSON.stringify({"username": form.username, "password": form.password})
     }).then(response => {
       return response.json();
@@ -75,7 +75,7 @@ class SignUpFormButtons extends Component {
   }
 }
 
-class SignUpForm extends Component {
+class SignUpForm extends AJAXComponent {
   schema = t.struct({
     username: t.String,
     email: t.String,
@@ -103,9 +103,8 @@ class SignUpForm extends Component {
     e.preventDefault();
     this.setState({requestStatus: undefined});
     let form = this.refs.form.getValue();
-    fetch('http://localhost:8000/create-account/', {
+    this.getPromise('/create-account/', {
       method: 'POST',
-      credentials: 'include',
       body: JSON.stringify({
         'username': form.username,
         'email': form.email,
@@ -144,7 +143,7 @@ class SignUpForm extends Component {
   }
 }
 
-class Account extends Component {
+class Account extends AJAXComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -162,7 +161,10 @@ class Account extends Component {
   }
 
   logout() {
-    fetch('http://localhost:8000/logout/', {credentials: 'include'}).then(response => {
+    this.getPromise('/logout/', {
+      method: "GET",
+      credentials: "include"
+    }).then(response => {
       return response.json();
     }).then(json => {
       this.props.updateUser(json.user);
