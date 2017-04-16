@@ -14,8 +14,13 @@ class NewTopic extends AJAXComponent {
 
   options = {
     fields: {
+      channel: {
+        help: "Valid characters are limited to alphanumerics, " +
+              "underscores, and hyphens. Invalid characters will be removed."
+      },
       content: {
-        type: "textarea"
+        type: "textarea",
+        help: "Markdown is supported. HTML is not."
       }
     }
   };

@@ -3,13 +3,14 @@ import Websocket from 'react-websocket';
 
 import app_config from 'config';
 
+import AJAXComponent from './AJAXComponent.jsx'
 import CurrentChannel from './CurrentChannel.jsx'
 import NewTopic from './NewTopic.jsx'
 import TopicList from './TopicList.jsx'
 import Account from './Account.jsx'
 import ChannelList from './ChannelList.jsx'
 
-class App extends Component {
+class App extends AJAXComponent {
   constructor() {
     super();
 
@@ -22,7 +23,7 @@ class App extends Component {
       }
     };
 
-    fetch("http://" + app_config.api_host + "/whoami/", {credentials: 'include'}).then(response => {
+    this.getPromise("/whoami/", {method: "GET"}).then(response => {
       return response.json();
     }).then(json => {
       this.setState({user: json.user});
@@ -31,7 +32,7 @@ class App extends Component {
   }
 
   handleData(data) {
-    this.setState(Object.assign(this.state, JSON.parse(data)));
+    this.setState(JSON.parse(data));
   }
 
   topicURL() {
