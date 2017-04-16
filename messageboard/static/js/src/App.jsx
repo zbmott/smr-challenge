@@ -51,7 +51,7 @@ class App extends Component {
         <article className="col-xs-8">
           <CurrentChannel name={this.state.currentChannel} />
           <NewTopic key={this.state.currentChannel} user={this.state.user} currentChannel={this.state.currentChannel} />
-          <TopicList topics={this.state.topicList} />
+          <TopicList key={this.state.user.anonymous} topics={this.state.topicList} user={this.state.user} />
         </article>
         <aside className="col-xs-4">
           <Account user={this.state.user} updateUser={this.updateUser.bind(this)}/>

@@ -32,7 +32,7 @@ class NewTopic extends Component {
   onSubmit(e) {
     e.preventDefault();
     let form = this.refs.form.getValue();
-    fetch('http://localhost:8000/api/v1/topics/', {
+    fetch("http://localhost:8000/api/v1/topics/", {
       method: "POST",
       credentials: "include",
       headers: {"Content-Type": "application/json"},
