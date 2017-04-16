@@ -16,6 +16,7 @@ Django==1.10.7
 django-cors-headers==2.0.2
 django-treebeard==4.1.0
 djangorestframework==3.6.2
+djangorestframework-recursive==0.1.1
 enum34==1.1.6
 html5lib==0.999999999
 idna==2.5

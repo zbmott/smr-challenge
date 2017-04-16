@@ -7,6 +7,7 @@ import bleach, re
 from django.utils import timezone
 
 from rest_framework import serializers
+from rest_framework_recursive.fields import RecursiveField
 
 from messageboard.models import Channel, Like, Topic
 
@@ -50,14 +51,20 @@ class TopicSerializer(serializers.ModelSerializer):
 
     likes = serializers.SerializerMethodField(required=False)
     created_by = serializers.SerializerMethodField(required=False)
-    parent = serializers.SerializerMethodField()
+    parent = serializers.IntegerField(source='get_parent_pk', required=False)
+
+    children = serializers.ListField(
+        child=RecursiveField(),
+        source='get_children_for_serializer',
+        required=False
+    )
 
     class Meta:
         model = Topic
         fields = [
             'pk', 'key', 'title', 'content',
             'channel', 'created_by', 'created',
-            'likes', 'parent'
+            'likes', 'parent', 'children',
         ]
         read_only_fields = ['key']
 
@@ -69,12 +76,23 @@ class TopicSerializer(serializers.ModelSerializer):
         validated_data['created'] = timezone.now()
         validated_data['created_by'] = self.context['request'].user
 
-        parent_pk = validated_data.pop('parent', None)
+        # This key in validated_data is weird because I used the
+        # 'source' kwarg. 'get_parent_pk' was serialized as
+        # 'parent', so now 'parent' is being deserialized into
+        # 'get_parent_pk'.
+        parent_pk = validated_data.pop('get_parent_pk', None)
         if parent_pk is None:
             topic = Topic.add_root(channel=channel, **validated_data)
         else:
             parent = Topic.objects.get(pk=parent_pk)
             topic = parent.add_child(channel=channel, **validated_data)
+
+            # Because of the way MP_Node.add_child works, topic is
+            # saved before it becomes the child of another node. The
+            # The operation that moves it under its parent's tree doesn't
+            # trigger the post_save handler, so I trigger it explicitly
+            # here in order to preserve the real-time functionality.
+            topic.save()
 
         return topic
 
