@@ -8,7 +8,6 @@ class MessageboardConfig(AppConfig):
     name = 'messageboard'
 
     def ready(self):
-        print "connecting handlers"
         post_save.connect(post_save_handler, sender=self.get_model('Channel'))
         post_save.connect(post_save_handler, sender=self.get_model('Topic'))
         post_save.connect(post_save_handler, sender=self.get_model('Like'))
