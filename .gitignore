@@ -3,3 +3,5 @@ node_modules/
 *.pyc
 *.sqlite3
 local_settings.py
+.DS_STORE
+npm-debug.log
