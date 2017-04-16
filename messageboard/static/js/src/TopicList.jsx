@@ -15,14 +15,18 @@ class TopicList extends Component {
   }
 
   render() {
-    return (
-      <div>
-        {this.props.topics.map((topic, idx) =>
-          <Topic key={topic.key} userLikes={this.isLiked(topic.pk)}
-                 anonymousUser={this.props.user.anonymous} {...topic} />
-        )}
-      </div>
-    )
+    if(this.props.topics.length > 0) {
+      return (
+        <div className="topic-list">
+          {this.props.topics.map((topic, idx) =>
+              <Topic key={topic.pk} user={this.props.user}
+                     userLikes={this.isLiked(topic.pk)} {...topic} />
+          )}
+        </div>
+      )
+    } else {
+      return null;
+    }
   }
 }
 export default TopicList

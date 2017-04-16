@@ -12,7 +12,7 @@ class TopicContent extends Component {
   // the server strips all HTML before the Topic is saved.
   render() {
     return (
-      <p dangerouslySetInnerHTML={this.getHTML()} />
+      <p className="topic-content" dangerouslySetInnerHTML={this.getHTML()} />
     )
   }
 }

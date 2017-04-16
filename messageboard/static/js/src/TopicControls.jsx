@@ -1,8 +1,9 @@
 import React from 'react'
 
+import LeaveComment from './LeaveComment.jsx'
 import AJAXComponent from './AJAXComponent.jsx'
 
-class Likes extends AJAXComponent {
+class TopicControls extends AJAXComponent {
   constructor(props) {
     super(props);
 
@@ -34,21 +35,31 @@ class Likes extends AJAXComponent {
   }
 
   render() {
-    if(this.props.anonymousUser) {
+    if(this.props.user.anonymous) {
       return (
-        <span>{this.props.likesCount} people like this topic.</span>
+        <div className="topic-controls">
+          <span>{this.props.likesCount} people like this topic.</span>
+        </div>
       )
     } else if(this.state.userLikes) {
       return (
-        <span>
-          {this.props.likesCount} people like this topic. You can <a onClick={this.unlike.bind(this)}>unlike</a> it if you want.
-        </span>
+        <div className="topic-controls">
+          <span>
+            {this.props.likesCount} people like this topic. You can <a onClick={this.unlike.bind(this)}>unlike</a> it if you want.
+          </span>
+          <LeaveComment pk={this.props.pk} title={this.props.title} channel={this.props.channel} />
+        </div>
       )
     } else {
       return (
-        <span>{this.props.likesCount} people <a onClick={this.like.bind(this)}>like</a> this topic.</span>
+        <div className="topic-controls">
+          <span>
+            {this.props.likesCount} people <a onClick={this.like.bind(this)}>like</a> this topic.
+          </span>
+          <LeaveComment parent_pk={this.props.pk} title={this.props.title} channel={this.props.channel} />
+        </div>
       )
     }
   }
 }
-export default Likes
+export default TopicControls

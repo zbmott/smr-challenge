@@ -1,8 +1,7 @@
 import React from 'react'
+import t from 'tcomb-form'
 
 import AJAXComponent from './AJAXComponent.jsx'
-
-import t from 'tcomb-form'
 
 
 class NewTopic extends AJAXComponent {
@@ -53,7 +52,7 @@ class NewTopic extends AJAXComponent {
   render() {
     if(this.props.user.anonymous === false) {
       return (
-        <div>
+        <div className="new-topic">
           <form onSubmit={this.onSubmit.bind(this)}>
             <t.form.Form ref="form" type={this.schema} options={this.options} value={this.state.defaultValue}/>
             <div className={this.state.messageClassName}>
