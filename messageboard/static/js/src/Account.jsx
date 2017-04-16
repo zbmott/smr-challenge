@@ -29,6 +29,7 @@ class SignInForm extends AJAXComponent {
     e.preventDefault();
     let form = this.refs.form.getValue();
     this.getPromise('/login/', {
+      method: "POST",
       body: JSON.stringify({"username": form.username, "password": form.password})
     }).then(response => {
       return response.json();

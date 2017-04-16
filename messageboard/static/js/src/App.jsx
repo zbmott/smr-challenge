@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Websocket from 'react-websocket';
 
-import config from 'config';
+import app_config from 'config';
 
 import CurrentChannel from './CurrentChannel.jsx'
 import NewTopic from './NewTopic.jsx'
@@ -13,8 +13,6 @@ class App extends Component {
   constructor() {
     super();
 
-    console.log(config);
-
     this.state = {
       "currentChannel": "home",
       "channelList": [],
@@ -24,7 +22,7 @@ class App extends Component {
       }
     };
 
-    fetch("http://" + config.api_host + "/whoami/", {credentials: 'include'}).then(response => {
+    fetch("http://" + app_config.api_host + "/whoami/", {credentials: 'include'}).then(response => {
       return response.json();
     }).then(json => {
       this.setState({user: json.user});
@@ -37,11 +35,11 @@ class App extends Component {
   }
 
   topicURL() {
-    return "ws://" + config.ws_host + "/topics/" + this.state.currentChannel;
+    return "ws://" + app_config.ws_host + "/topics/" + this.state.currentChannel;
   }
 
   channelURL() {
-    return "ws://" + config.ws_host + "/_channellist";
+    return "ws://" + app_config.ws_host + "/_channellist";
   }
 
   updateUser(user) {

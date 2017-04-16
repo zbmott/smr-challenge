@@ -27,10 +27,10 @@ module.exports = {
   },
   externals: {
     'config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
-      "ws_host": "54.68.44.21",
+      "ws_host": "54.68.44.21/ws",
       "api_host": "54.68.44.21"
     } : {
-      "ws_host": "localhost:8000",
+      "ws_host": "localhost:8000/ws",
       "api_host": "localhost:8000"
     })
   }

@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
 
-import config from 'config';
+import app_config from 'config';
 
 
 class AJAXComponent extends Component {
-  getPromise(path, config={}) {
-    config = Object.assign({
+  getPromise(path, promise_config={}) {
+    promise_config = Object.assign({
       method: "POST",
       credentials: "include",
       headers: {"Content-Type": "application/json"},
-    }, config);
+    }, promise_config);
 
-    return fetch(config.api_host + path, config);
+    return fetch('http://' + app_config.api_host + path, promise_config);
   };
 }
 export default AJAXComponent
