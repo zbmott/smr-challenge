@@ -4,11 +4,10 @@
 import json
 
 from django.db import IntegrityError
-from django.http import JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import require_GET, require_POST
 
 from messageboard import forms as messageboard_forms
