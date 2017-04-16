@@ -3,12 +3,13 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
+from django.conf import settings
 
 CHANNELS_TO_CREATE = [
-    '/',
-    '/outer-space',
-    '/jokes',
-    '/music'
+    'home',
+    'outer-space',
+    'jokes',
+    'music'
 ]
 
 

@@ -22,7 +22,7 @@ def topic_add(message, channel):
 
     # Normally, a users sees all the topics posted to
     # the channel they're currently connected to.
-    topicList = Topic.objects.filter(channel__name=channel).to_dict()
+    topicList = Topic.objects.filter(channel__name=channel)
     if channel == settings.ROOT_CHANNEL_NAME:
         # However, users who are connected to the root channel see
         # the 25 (by default) most recent topics posted to ALL channels.
@@ -30,7 +30,7 @@ def topic_add(message, channel):
 
     message.reply_channel.send({
         'text': json.dumps({
-            'topicList': topicList
+            'topicList': topicList.to_dict()
         })
     })
     message.channel_session['channel'] = channel

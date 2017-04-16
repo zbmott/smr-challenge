@@ -9,7 +9,7 @@ topic_routing = [
     route(
         'websocket.connect',
         'messageboard.consumers.topic_add',
-        path=r'(?P<channel>[a-zA-Z0-9_\-/]+)/$'
+        path=r'(?P<channel>[a-zA-Z0-9_\-\.]+)$'
     ),
     route(
         'websocket.disconnect',
@@ -25,6 +25,6 @@ channel_list_routing = [
 
 
 routing = [
-    include(topic_routing, path=r'^/topic'),
+    include(topic_routing, path=r'^/topics/'),
     include(channel_list_routing, path=r'^/_channellist')
 ]
