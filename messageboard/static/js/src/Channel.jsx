@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
 
+import {Link} from 'react-router-dom'
+
 class Channel extends Component {
 
-  updateChannel(e) {
-    e.preventDefault();
-    this.props.updateAppChannel(this.props.name);
+  getTo() {
+    return "/" + this.props.name + "/";
   }
 
   render() {
     return (
-      <a onClick={this.updateChannel.bind(this)}>
+      <Link to={this.getTo()}>
         {this.props.name}
-      </a>
+      </Link>
     )
   }
 }

@@ -17,7 +17,7 @@ class Topic extends Component {
                        userLikes={this.props.userLikes} title={this.props.title}
                        channel={this.props.channel} />
         <div className="topic-comments">
-          <TopicList key={this.props.user.anonymous} topics={this.props.children} user={this.props.user} />
+          <TopicList key={this.props.user.anonymous} topicList={this.props.children} user={this.props.user} />
         </div>
       </div>
     )

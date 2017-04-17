@@ -15,10 +15,10 @@ class TopicList extends Component {
   }
 
   render() {
-    if(this.props.topics.length > 0) {
+    if(this.props.topicList.length > 0) {
       return (
         <div className="topic-list">
-          {this.props.topics.map((topic, idx) =>
+          {this.props.topicList.map((topic, idx) =>
               <Topic key={topic.pk} user={this.props.user}
                      userLikes={this.isLiked(topic.pk)} {...topic} />
           )}
