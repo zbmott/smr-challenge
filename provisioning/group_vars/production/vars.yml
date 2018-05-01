@@ -17,7 +17,7 @@ app_admins:
 # Used to configure both 'server_name' nginx directive and
 # local_settings.ALLOWED_HOSTS Django configuration parameter.
 app_nginx_server_names:
-  - "54.68.44.21"
+  - "34.214.12.122"
 
 app_db_name: "smrchallenge_django"
 app_db_host: "localhost"
