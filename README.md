@@ -46,5 +46,3 @@ library for sophisticated implementations of hierarchical data structures in SQL
 optimize tree operations.
 
 The last commit I made during my allotted 48 hours was [07fc9adf](https://github.com/zbmott/smr-challenge/commit/07fc9adff0bb123e9995fb33f3e11a3ed867fc61).
-
-As of 2017-05-01, you can find a live demo of this project at [http://54.68.44.21/](http://54.68.44.21/).
