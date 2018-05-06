@@ -27,8 +27,8 @@ module.exports = {
   },
   externals: {
     'config': JSON.stringify(process.env.NODE_ENV === 'production' ? {
-      "ws_host": "34.214.12.122/ws",
-      "api_host": "34.214.12.122"
+      "ws_host": "smr.zbmott.net/ws",
+      "api_host": "smr.zbmott.net"
     } : {
       "ws_host": "localhost:8000/ws",
       "api_host": "localhost:8000"
